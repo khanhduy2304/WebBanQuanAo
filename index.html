@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<<<<<<< HEAD
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOVA — Wear Your Identity</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/index.css">
+</head>
+
+<body>
+
+<div class="announcement">
+    NOVA NEW SEASON — FREE SHIPPING CHO ĐƠN HÀNG TỪ 699K
+</div>
+
+<header class="header">
+    <a href="index.html" class="logo">N<span>Ø</span>VA</a>
+
+    <nav class="nav" id="mainNav">
+        <a href="index.html">TRANG CHỦ</a>
+        <a href="#products">SẢN PHẨM</a>
+        <a href="#categories">DANH MỤC</a>
+        <a href="#story">GIỚI THIỆU</a>
+        <a href="#footer">LIÊN HỆ</a>
+    </nav>
+
+    <div class="header-actions">
+        <button class="icon-btn menu-toggle" onclick="toggleMenu()" aria-label="Mở menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 7h18M3 12h18M3 17h18"/>
+            </svg>
+        </button>
+
+        <button class="icon-btn" onclick="focusSearch()" aria-label="Tìm kiếm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="10.8" cy="10.8" r="6.8"/>
+                <path d="m16 16 5 5"/>
+            </svg>
+        </button>
+
+        <button class="icon-btn" onclick="openAccount()" aria-label="Tài khoản">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="8" r="3.5"/>
+                <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
+            </svg>
+        </button>
+
+        <button class="icon-btn" onclick="openCart()" aria-label="Giỏ hàng">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 4h2l2.5 12h11L21 8H6"/>
+                <circle cx="9" cy="20" r="1"/>
+                <circle cx="18" cy="20" r="1"/>
+            </svg>
+            <span class="cart-count" id="cartCount">0</span>
+        </button>
+    </div>
+</header>
+
+<main>
+
+    <section class="hero">
+        <div class="hero-copy">
+            <span class="eyebrow">THE EVERYDAY COLLECTION / 2026</span>
+            <h1>Simple.<br>Bold.<br><em>Different.</em></h1>
+
+            <p class="hero-desc">
+                Không cần chạy theo xu hướng.<br>
+                Mặc thứ khiến bạn là chính mình.<br>
+                Streetwear made for your own rules.
+            </p>
+
+            <div class="hero-bottom">
+                <a class="btn-primary" href="#products">
+                    KHÁM PHÁ NGAY <span>↗</span>
+                </a>
+                <span class="hero-note">DESIGNED<br>FOR EVERYDAY.</span>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <img
+                src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1400&q=85"
+                alt="Bộ sưu tập streetwear NOVA"
+                fetchpriority="high">
+            <div class="hero-label">NOVA STUDIO — DROP 001</div>
+        </div>
+    </section>
+
+    <section class="benefits">
+        <div class="benefit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 7h11v11H3zM14 11h4l3 4v3h-7z"/>
+                <circle cx="7" cy="19" r="2"/><circle cx="18" cy="19" r="2"/>
+            </svg>
+            <div>GIAO HÀNG TOÀN QUỐC<small>Theo dõi đơn hàng dễ dàng</small></div>
+        </div>
+
+        <div class="benefit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M20 7v5h-5M4 17v-5h5"/>
+                <path d="M5.5 9a7 7 0 0 1 12-2L20 12M4 12l2.5 5a7 7 0 0 0 12-2"/>
+            </svg>
+            <div>ĐỔI HÀNG LINH HOẠT<small>Hỗ trợ theo chính sách cửa hàng</small></div>
+        </div>
+
+        <div class="benefit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/>
+                <path d="m9 12 2 2 4-4"/>
+            </svg>
+            <div>CHẤT LƯỢNG ĐẶT LÊN ĐẦU<small>Chọn lọc từng thiết kế</small></div>
+        </div>
+    </section>
+
+    <section class="section" id="categories">
+        <div class="section-heading">
+            <div>
+                <p class="section-kicker">FIND YOUR FIT</p>
+                <h2>Shop by category.</h2>
+            </div>
+            <a href="#products" class="text-link">TẤT CẢ SẢN PHẨM ↗</a>
+        </div>
+
+        <div class="categories">
+            <a class="category-card" href="#products" onclick="filterCategory('Áo thun')">
+                <div class="category-image">
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=80" alt="Áo thun basic" loading="lazy">
+                </div>
+                <div class="category-caption"><h3>GRAPHIC TEES</h3><span>↗</span></div>
+            </a>
+
+            <a class="category-card" href="#products" onclick="filterCategory('Áo khoác')">
+                <div class="category-image">
+                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=700&q=80" alt="Áo khoác streetwear" loading="lazy">
+                </div>
+                <div class="category-caption"><h3>OUTERWEAR</h3><span>↗</span></div>
+            </a>
+
+            <a class="category-card" href="#products" onclick="filterCategory('Hoodie')">
+                <div class="category-image">
+                    <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=700&q=80" alt="Hoodie phong cách đường phố" loading="lazy">
+                </div>
+                <div class="category-caption"><h3>HOODIES</h3><span>↗</span></div>
+            </a>
+
+            <a class="category-card" href="#products" onclick="filterCategory('Quần')">
+                <div class="category-image">
+                    <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=700&q=80" alt="Quần thời trang" loading="lazy">
+                </div>
+                <div class="category-caption"><h3>BOTTOMS</h3><span>↗</span></div>
+            </a>
+        </div>
+    </section>
+
+    <section class="section product-section" id="products">
+        <div class="section-heading">
+            <div>
+                <p class="section-kicker">HANDPICKED FOR YOU</p>
+                <h2>Latest essentials.</h2>
+            </div>
+            <a href="#products" class="text-link" onclick="clearFilter()">XEM TẤT CẢ ↗</a>
+        </div>
+
+        <div class="toolbar" style="display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap">
+            <input
+                id="productSearch"
+                type="search"
+                placeholder="Tìm tên sản phẩm..."
+                oninput="renderProducts()"
+                style="padding:12px 14px;flex:1;min-width:180px;border:1px solid #e1dcd5;outline-color:#8d705d;background:white;font-size:11px">
+
+            <select id="categoryFilter" onchange="renderProducts()"
+                style="padding:12px;border:1px solid #e1dcd5;background:white;font-size:11px;min-width:135px">
+                <option value="">Tất cả danh mục</option>
+                <option value="Áo thun">Áo thun</option>
+                <option value="Áo khoác">Áo khoác</option>
+                <option value="Hoodie">Hoodie</option>
+                <option value="Quần">Quần</option>
+                <option value="Phụ kiện">Phụ kiện</option>
+            </select>
+            <input id="minPrice" type="number" min="0" placeholder="Giá từ (VNĐ)" oninput="renderProducts()" style="padding:12px;border:1px solid #e1dcd5;min-width:130px">
+            <input id="maxPrice" type="number" min="0" placeholder="Giá đến (VNĐ)" oninput="renderProducts()" style="padding:12px;border:1px solid #e1dcd5;min-width:130px">
+        </div>
+
+        <div class="product-grid" id="productGrid"></div>
+        <p id="noProducts" style="display:none;text-align:center;padding:35px;font-size:12px;color:#81786e">Không tìm thấy sản phẩm phù hợp.</p>
+    </section>
+
+    <section class="editorial" id="story">
+        <div class="editorial-image">
+            <img src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1000&q=85" alt="Phong cách thời trang NOVA" loading="lazy">
+        </div>
+        <div class="editorial-copy">
+            <p class="section-kicker">MORE THAN JUST CLOTHES</p>
+            <h2>Wear your identity.<br>Own your story.</h2>
+            <p>
+                NOVA tin rằng phong cách không nằm ở việc bạn mặc gì đang thịnh hành,
+                mà nằm ở cách bạn biến những điều đơn giản thành dấu ấn riêng.
+            </p>
+            <a class="btn-primary" href="#categories">TÌM PHONG CÁCH CỦA BẠN ↗</a>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <p class="section-kicker">STAY IN THE LOOP</p>
+        <h2>Be part of NOVA.</h2>
+        <p>Nhận thông tin bộ sưu tập mới và những cập nhật từ chúng mình.</p>
+
+        <form class="newsletter-form" onsubmit="subscribe(event)">
+            <input type="email" id="newsletterEmail" placeholder="Địa chỉ email của bạn" required>
+            <button type="submit">ĐĂNG KÝ ↗</button>
+        </form>
+        <p id="newsletterMessage" style="margin-top:12px"></p>
+    </section>
+
+</main>
+
+<footer class="footer" id="footer">
+    <div class="footer-main">
+        <div class="footer-about">
+            <div class="footer-logo">NØVA</div>
+            <p>
+                SIMPLE BUT DIFFERENT.<br>
+                Thời trang đường phố dành cho những người
+                không ngại thể hiện chất riêng.
+            </p>
+        </div>
+
+        <div class="footer-col">
+            <h4>KHÁM PHÁ</h4>
+            <a href="#products">Sản phẩm mới</a>
+            <a href="#categories">Danh mục</a>
+            <a href="#story">Về NOVA</a>
+        </div>
+
+        <div class="footer-col">
+            <h4>HỖ TRỢ</h4>
+            <a href="#footer">Hướng dẫn mua hàng</a>
+            <a href="#footer">Chính sách đổi trả</a>
+            <a href="#footer">Chính sách giao hàng</a>
+        </div>
+
+        <div class="footer-col">
+            <h4>TÀI KHOẢN</h4>
+            <a href="login.html">Đăng nhập khách hàng</a>
+            <a href="login.html">Đăng ký tài khoản</a>
+            <a href="loginadmin.html">Quản trị cửa hàng</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <span>© 2026 NOVA LOCAL BRAND. ALL RIGHTS RESERVED.</span>
+        <span>DESIGNED FOR YOUR OWN RULES.</span>
+    </div>
+</footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-head">
+        <h2>Your shopping bag.</h2>
+        <button class="close-cart" onclick="closeCart()" aria-label="Đóng giỏ hàng">×</button>
+    </div>
+
+    <div id="cartItems"></div>
+
+    <div class="cart-total">
+        <span>TỔNG CỘNG</span>
+        <span id="cartTotal">0₫</span>
+    </div>
+
+    <a href="#" onclick="openCheckout(event)" class="btn-primary cart-checkout">
+        TIẾN HÀNH ĐẶT HÀNG ↗
+    </a>
+
+    <p style="font-size:10px;color:#94877d;line-height:1.8;margin-top:15px">
+        Đăng nhập hoặc đăng ký tài khoản để tiếp tục mua sắm.
+    </p>
+</aside>
+
+<div class="checkout-overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
+<section class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+  <button class="checkout-close" type="button" onclick="closeCheckout()" aria-label="Đóng">×</button>
+  <p class="eyebrow">NOVA CHECKOUT</p>
+  <h2 id="checkoutTitle">Thông tin giao hàng</h2>
+  <p class="checkout-note">Kiểm tra thông tin trước khi xác nhận đơn hàng của bạn.</p>
+  <form id="checkoutForm" onsubmit="placeOrder(event)">
+    <label for="checkoutName">Họ và tên</label>
+    <input id="checkoutName" name="fullname" required autocomplete="name" />
+    
+    <label for="checkoutPhone">Số điện thoại</label>
+    <input id="checkoutPhone" name="phone" type="tel" maxlength="10" placeholder="Nhập đúng 10 chữ số (ví dụ: 0912345678)" required autocomplete="tel" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" pattern="[0-9]{10}" title="Số điện thoại phải gồm đúng 10 chữ số" />
+    
+    <label for="savedAddress">Địa chỉ đã lưu</label>
+    <select id="savedAddress" onchange="selectSavedAddress()"><option value="">Nhập địa chỉ mới</option></select>
+    
+    <label for="checkoutAddress">Địa chỉ nhận hàng</label>
+    <textarea id="checkoutAddress" name="address" required rows="3" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành"></textarea>
+    
+    <label for="checkoutPayment">Phương thức thanh toán</label>
+    <select id="checkoutPayment" name="payment_method" required>
+      <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+      <option value="BANK_TRANSFER">Chuyển khoản ngân hàng</option>
+    </select>
+    
+    <div class="checkout-total"><span>Tổng thanh toán</span><strong id="checkoutTotal">0₫</strong></div>
+    <p id="checkoutMessage" class="checkout-message" role="status"></p>
+    <button class="btn-primary checkout-submit" id="checkoutSubmit" type="submit">XÁC NHẬN ĐẶT HÀNG ↗</button>
+  </form>
+</section>
+
+<div class="checkout-overlay" id="productDetailOverlay" onclick="closeProductDetail()"></div>
+<section class="checkout-modal" id="productDetailModal" role="dialog" aria-modal="true" aria-labelledby="detailName">
+  <button class="checkout-close" type="button" onclick="closeProductDetail()" aria-label="Đóng">×</button>
+  <img id="detailImage" alt="" style="width:100%;max-height:260px;object-fit:cover;border-radius:8px;margin-bottom:14px">
+  <p class="eyebrow" id="detailCategory"></p><h2 id="detailName"></h2><p id="detailPrice" class="product-price"></p>
+  <p id="detailDescription"></p><p id="detailStock"></p>
+  <button class="btn-primary checkout-submit" id="detailAddButton" type="button">THÊM VÀO GIỎ</button>
+</section>
+
+<div class="checkout-overlay" id="accountOverlay" onclick="closeAccount()"></div>
+<section class="checkout-modal" id="accountModal" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
+  <button class="checkout-close" type="button" onclick="closeAccount()" aria-label="Đóng">×</button>
+  <p class="eyebrow">NOVA ACCOUNT</p><h2 id="accountTitle">Tài khoản của bạn</h2><p id="accountStatus" class="checkout-message"></p>
+  <form id="profileForm" onsubmit="saveProfile(event)">
+    <label for="profileName">Họ tên</label><input id="profileName" required>
+    
+    <label for="profilePhone">Số điện thoại</label>
+    <input id="profilePhone" type="tel" maxlength="10" placeholder="Nhập đúng 10 chữ số" required inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" pattern="[0-9]{10}" title="Số điện thoại phải gồm đúng 10 chữ số">
+    
+    <label for="profileAddress">Địa chỉ thường dùng</label><textarea id="profileAddress" rows="2"></textarea>
+    <button class="btn-primary checkout-submit" type="submit">LƯU THÔNG TIN</button>
+  </form>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+    <button class="btn-primary" id="btnOrderHistory" type="button" onclick="showOrderHistory()">ĐƠN HÀNG ĐÃ MUA</button>
+    <button class="btn-primary" id="btnLogout" type="button" onclick="customerLogout()">ĐĂNG XUẤT</button>
+    <a class="btn-primary" id="btnLoginRegister" href="login.html">ĐĂNG NHẬP / ĐĂNG KÝ</a>
+  </div>
+  <div id="customerOrderHistory" style="margin-top:16px"></div>
+</section>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="js/index.js"></script>
+
+=======
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Bán Quần Áo</title>
+    <!-- Liên kết file CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/home.css">
+</head>
+<body>
+    <!-- Header của trang web -->
+    <header>
+        <h1>Shop Quần Áo</h1>
+        <nav>
+            <a href="index.html">Trang chủ</a>
+            <a href="products.html">Sản phẩm</a>
+            <a href="cart.html">Giỏ hàng</a>
+        </nav>
+    </header>
+
+    <!-- Nội dung chính -->
+    <main>
+        <h2>Chào mừng đến với cửa hàng thời trang của chúng tôi!</h2>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Web Bán Quần Áo</p>
+    </footer>
+
+    <!-- Liên kết file JavaScript -->
+    <script src="assets/js/main.js"></script>
+>>>>>>> 1bcbc6999d48e1e4a8a66f0857fef9ac3cff6240
+</body>
+</html>

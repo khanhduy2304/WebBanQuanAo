@@ -1,0 +1,104 @@
+/* CSS được tách từ admin.html; giữ nguyên giao diện gốc NOVA. */
+* { box-sizing: border-box; }
+        body {
+            margin: 0; font-family: Arial, sans-serif;
+            background: #f5f4f1; color: #28221e;
+        }
+        button, input, select { font: inherit; }
+        button { cursor: pointer; }
+        .topbar {
+            height: 65px; background: #4b3328; color: white;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 25px;
+        }
+        .brand { font-size: 25px; font-weight: bold; letter-spacing: 2px; }
+        .topbar a { color: white; text-decoration: none; font-size: 13px; }
+        .layout { display: flex; min-height: calc(100vh - 65px); }
+        .sidebar {
+            width: 235px; flex-shrink: 0; background: #30231c;
+            color: #eee; padding: 25px 14px;
+        }
+        .sidebar p {
+            color: #bca896; font-size: 10px; letter-spacing: 2px;
+            padding: 0 12px;
+        }
+        .sidebar button {
+            width: 100%; border: 0; background: transparent;
+            color: #eee; text-align: left; padding: 14px 12px;
+            margin: 3px 0; font-size: 13px;
+        }
+        .sidebar button:hover, .sidebar button.active {
+            background: #604737;
+        }
+        .main { flex: 1; padding: 30px; min-width: 0; }
+        .page-title {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 15px; flex-wrap: wrap; margin-bottom: 25px;
+        }
+        h1 { font: 30px Georgia, serif; margin: 0 0 8px; }
+        .muted { color: #81776f; font-size: 13px; }
+        .stats {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 15px; margin-bottom: 25px;
+        }
+        .stat, .panel {
+            background: white; padding: 20px;
+            border: 1px solid #ece7e1;
+        }
+        .stat p { color: #7c7168; font-size: 12px; }
+        .stat strong { font-size: 24px; }
+        .panel { margin-bottom: 20px; }
+        .panel h2 { font-size: 17px; margin: 0 0 18px; }
+        .toolbar {
+            display: flex; gap: 10px; flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        input, select {
+            padding: 11px; border: 1px solid #ddd4cb;
+            background: white; min-width: 0;
+        }
+        .toolbar input { flex: 1; }
+        .btn {
+            border: none; padding: 11px 16px;
+            background: #4b3328; color: white;
+        }
+        .btn-light {
+            border: 1px solid #cfc4b9; padding: 10px 14px;
+            background: white; color: #4b3328;
+        }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td {
+            text-align: left; padding: 13px 10px;
+            border-bottom: 1px solid #eee8e2; font-size: 12px;
+            white-space: nowrap;
+        }
+        th { background: #f7f4f0; color: #695547; }
+        .badge {
+            display: inline-block; padding: 5px 8px;
+            background: #e8eee4; color: #42623a; font-size: 11px;
+        }
+        .form-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;
+        }
+        .form-grid label { display: block; font-size: 12px; margin-bottom: 7px; }
+        .form-grid input, .form-grid select { width: 100%; }
+        .form-field.full { grid-column: 1 / -1; }
+        .form-actions { display: flex; gap: 10px; margin-top: 18px; }
+        .notice { font-size: 13px; color: #4c6c3b; margin: 12px 0; }
+        .hidden { display: none !important; }
+        @media(max-width: 900px) {
+            .sidebar { width: 185px; }
+            .main { padding: 20px; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media(max-width: 600px) {
+            .layout { display: block; }
+            .sidebar { width: 100%; padding: 10px; }
+            .sidebar p { display: none; }
+            .sidebar button { width: auto; padding: 10px; }
+            .main { padding: 15px; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-field.full { grid-column: auto; }
+        }

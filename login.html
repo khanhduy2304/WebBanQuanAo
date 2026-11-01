@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập khách hàng | NOVA</title>
+    
+  <link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body>
+
+<header>
+    <a class="logo" href="index.html">NOVA</a>
+    <a href="index.html">← Quay lại cửa hàng</a>
+</header>
+
+<main>
+    <section class="login-card">
+        <div id="loginForm">
+            <p>WELCOME TO NOVA</p>
+            <h1>Đăng nhập</h1>
+            <p class="subtitle">Đăng nhập để mua sắm và theo dõi đơn hàng của bạn.</p>
+
+            <form onsubmit="loginCustomer(event)">
+                <label for="loginEmail">Email hoặc tên đăng nhập</label>
+                <input id="loginEmail" required autocomplete="username"
+                       placeholder="Nhập email hoặc tên đăng nhập">
+
+                <label for="loginPassword">Mật khẩu</label>
+                <input id="loginPassword" type="password" required
+                       autocomplete="current-password" placeholder="Nhập mật khẩu">
+
+                <button class="btn" type="submit">ĐĂNG NHẬP</button>
+            </form>
+
+            <p class="switch">
+                Chưa có tài khoản?
+                <a href="#" onclick="showRegister(event)">Đăng ký ngay</a>
+            </p>
+        </div>
+
+        <div id="registerForm" hidden>
+            <p>JOIN THE NOVA COMMUNITY</p>
+            <h1>Tạo tài khoản</h1>
+            <p class="subtitle">Điền thông tin để bắt đầu mua sắm.</p>
+
+            <form onsubmit="registerCustomer(event)">
+                <label for="fullName">Họ và tên</label>
+                <input id="fullName" required placeholder="Nhập họ và tên">
+
+                <label for="registerEmail">Email</label>
+                <input id="registerEmail" type="email" required placeholder="example@email.com">
+
+                <label for="registerPassword">Mật khẩu</label>
+                <input id="registerPassword" type="password" minlength="8" required
+                       placeholder="Tối thiểu 6 ký tự">
+
+                <button class="btn" type="submit">TẠO TÀI KHOẢN</button>
+            </form>
+
+            <p class="switch">
+                Đã có tài khoản?
+                <a href="#" onclick="showLogin(event)">Đăng nhập</a>
+            </p>
+        </div>
+
+        <p id="message" class="message" role="status"></p>
+        <a class="back" href="index.html">← Tiếp tục xem sản phẩm</a>
+    </section>
+</main>
+
+<footer>© 2026 NOVA LOCAL BRAND</footer>
+
+<script src="js/login.js"></script>
+</body>
+</html>

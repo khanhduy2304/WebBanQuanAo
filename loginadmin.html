@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập quản trị | NOVA</title>
+    
+  <link rel="stylesheet" href="assets/css/loginadmin.css">
+</head>
+<body>
+
+<section class="admin-login">
+    <div class="logo">NOVA</div>
+    <div class="tagline">STORE MANAGEMENT SYSTEM</div>
+
+    <h1>Đăng nhập quản trị</h1>
+    <p>Đăng nhập bằng tài khoản quản trị để quản lý hoạt động cửa hàng.</p>
+
+    <form onsubmit="adminLogin(event)">
+        <label for="adminUsername">Tên đăng nhập</label>
+        <input id="adminUsername" required autocomplete="username"
+               placeholder="Nhập tên đăng nhập">
+
+        <label for="adminPassword">Mật khẩu</label>
+        <input id="adminPassword" type="password" required
+               autocomplete="current-password" placeholder="Nhập mật khẩu">
+
+        <button type="submit">ĐĂNG NHẬP HỆ THỐNG ↗</button>
+    </form>
+
+    <p id="message" class="message" role="status"></p>
+
+    <div class="demo">
+        <strong>Tài khoản demo</strong><br>
+        Tên đăng nhập: admin<br>
+        Mật khẩu: nova123
+    </div>
+
+    <a class="back" href="index.html">← Quay lại trang chủ</a>
+</section>
+
+<script src="js/loginadmin.js"></script>
+
+</body>
+</html>

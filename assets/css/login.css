@@ -1,0 +1,37 @@
+/* CSS được tách từ login.html; giữ nguyên giao diện gốc NOVA. */
+* { box-sizing: border-box; }
+        body {
+            margin: 0; font-family: Arial, sans-serif;
+            background: #f3f1ed; color: #241a15;
+        }
+        header {
+            background: #4b3328; color: white; padding: 20px 6%;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        header a { color: white; text-decoration: none; }
+        .logo { font-size: 26px; font-weight: bold; letter-spacing: 2px; }
+        main {
+            min-height: 85vh; display: flex; justify-content: center;
+            align-items: center; padding: 35px 15px;
+        }
+        .login-card {
+            background: white; padding: 38px; width: 100%;
+            max-width: 430px; box-shadow: 0 8px 35px #0000000c;
+        }
+        h1 { font-family: Georgia, serif; font-size: 30px; }
+        .subtitle { color: #777; font-size: 13px; line-height: 1.6; }
+        label { display: block; font-size: 13px; margin: 18px 0 8px; }
+        input {
+            width: 100%; padding: 13px; border: 1px solid #d8d0c8;
+            outline-color: #765846;
+        }
+        .btn {
+            width: 100%; padding: 14px; border: none;
+            background: #4b3328; color: white; cursor: pointer;
+            margin-top: 22px;
+        }
+        .switch { text-align: center; margin-top: 22px; font-size: 13px; }
+        .switch a { color: #704b36; font-weight: bold; }
+        .back { display: block; margin-top: 18px; text-align: center; font-size: 13px; }
+        .message { font-size: 13px; margin-top: 14px; line-height: 1.5; }
+        footer { text-align: center; padding: 18px; font-size: 12px; color: #777; }

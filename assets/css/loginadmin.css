@@ -1,0 +1,40 @@
+/* CSS được tách từ loginadmin.html; giữ nguyên giao diện gốc NOVA. */
+* { box-sizing: border-box; }
+        body {
+            margin: 0; font-family: Arial, sans-serif;
+            background: #29201b; color: #211913;
+            min-height: 100vh; display: flex; align-items: center;
+            justify-content: center; padding: 20px;
+        }
+        .admin-login {
+            background: #fff; width: 100%; max-width: 420px;
+            padding: 40px; border-top: 5px solid #80604a;
+        }
+        .logo {
+            font-size: 30px; letter-spacing: 3px;
+            font-weight: bold; text-align: center;
+        }
+        .tagline {
+            text-align: center; font-size: 10px;
+            letter-spacing: 2px; color: #88786b;
+        }
+        h1 { font: 28px Georgia, serif; margin-top: 35px; }
+        p { font-size: 13px; color: #756b63; line-height: 1.6; }
+        label { display: block; font-size: 13px; margin: 20px 0 8px; }
+        input {
+            width: 100%; padding: 13px; border: 1px solid #d8d0c8;
+        }
+        button {
+            width: 100%; padding: 14px; margin-top: 25px;
+            border: none; background: #4b3328; color: white;
+            cursor: pointer; letter-spacing: 1px;
+        }
+        .message { color: #a33; font-size: 13px; }
+        .back {
+            display: block; text-align: center; margin-top: 24px;
+            color: #6d4d3b; text-decoration: none; font-size: 13px;
+        }
+        .demo {
+            background: #f5f2ee; padding: 12px; margin-top: 20px;
+            font-size: 12px; line-height: 1.8;
+        }
