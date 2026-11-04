@@ -3,11 +3,11 @@ if (sessionStorage.getItem('novaAdminLoggedIn') !== 'true') window.location.repl
 
 const defaultCategories = ['Áo thun', 'Áo khoác', 'Hoodie', 'Quần', 'Phụ kiện'];
 const seedProducts = [
-  { id: 1, code: 'NOVA-TS-001', name: 'Áo thun NOVA Basic', category: 'Áo thun', size: 'M', cost: 90000, price: 199000, stock: 20, image: 'assets/images/product/aothun.jpg', description: 'Áo thun basic chất liệu cotton cao cấp.' },
-  { id: 2, code: 'NOVA-HOOD-001', name: 'Hoodie NOVA Street', category: 'Hoodie', size: 'M', cost: 180000, price: 399000, stock: 10, image: 'assets/images/product/hoodie.jpg', description: 'Hoodie phong cách đường phố.' },
-  { id: 3, code: 'NOVA-JK-001', name: 'Áo khoác NOVA Basic', category: 'Áo khoác', size: 'M', cost: 150000, price: 299000, stock: 15, image: 'assets/images/product/ao_khoac.jpg', description: 'Áo khoác nhẹ, phù hợp nhiều thời tiết.' },
-  { id: 4, code: 'NOVA-JN-001', name: 'Quần jeans NOVA nam', category: 'Quần', size: 'M', cost: 220000, price: 499000, stock: 9, image: 'assets/images/product/quan_jeans_nam.jpg', description: 'Quần jeans nam dáng regular fit.' },
-  { id: 5, code: 'NOVA-WP-001', name: 'Quần ống rộng NOVA nữ', category: 'Quần', size: 'M', cost: 200000, price: 459000, stock: 8, image: 'assets/images/product/quan_ong_rong_nu.jpg', description: 'Quần ống rộng nữ thời trang, thoải mái.' }
+  { id: 1, code: 'NOVA-TS-001', name: 'Áo thun NOVA Basic', category: 'Áo thun', size: 'M', cost: 90000, price: 199000, stock: 20, image: './assets/images/product/aothun.jpg', description: 'Áo thun basic chất liệu cotton cao cấp.' },
+  { id: 2, code: 'NOVA-HOOD-001', name: 'Hoodie NOVA Street', category: 'Hoodie', size: 'M', cost: 180000, price: 399000, stock: 10, image: './assets/images/product/hoodie.jpg', description: 'Hoodie phong cách đường phố.' },
+  { id: 3, code: 'NOVA-JK-001', name: 'Áo khoác NOVA Basic', category: 'Áo khoác', size: 'M', cost: 150000, price: 299000, stock: 15, image: './assets/images/product/ao_khoac.jpg', description: 'Áo khoác nhẹ, phù hợp nhiều thời tiết.' },
+  { id: 4, code: 'NOVA-JN-001', name: 'Quần jeans NOVA nam', category: 'Quần', size: 'M', cost: 220000, price: 499000, stock: 9, image: './assets/images/product/quan_jeans_nam.jpg', description: 'Quần jeans nam dáng regular fit.' },
+  { id: 5, code: 'NOVA-WP-001', name: 'Quần ống rộng NOVA nữ', category: 'Quần', size: 'M', cost: 200000, price: 459000, stock: 8, image: './assets/images/product/quan_ong_rong_nu.jpg', description: 'Quần ống rộng nữ thời trang, thoải mái.' }
 ];
 
 const defaultCategoryProfits = {
@@ -996,8 +996,15 @@ function exportMovementExcel(type) {
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), type === 'PN' ? 'Phieu nhap' : 'Phieu xuat');
     XLSX.writeFile(wb, `NOVA_${type === 'PN' ? 'PhieuNhap' : 'PhieuXuat'}.xlsx`);
+    showMessage(`Đã xuất file Excel ${type === 'PN' ? 'phiếu nhập' : 'phiếu xuất'}.`);
   } else {
-    alert('Thư viện Excel chưa sẵn sàng. Bạn có thể kiểm tra kết nối mạng hoặc thử lại.');
+    const csv = '\ufeff' + [Object.keys(rows[0] || { 'Thông báo': 'Không có dữ liệu' }).join(','), ...rows.map(r => Object.values(r).map(v => '"' + String(v).replace(/"/g, '""') + '"').join(','))].join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+    a.download = `NOVA_${type === 'PN' ? 'PhieuNhap' : 'PhieuXuat'}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    showMessage(`Đã xuất file CSV ${type === 'PN' ? 'phiếu nhập' : 'phiếu xuất'}.`);
   }
 }
 

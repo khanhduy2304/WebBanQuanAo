@@ -20,16 +20,16 @@ function escapeHtml(s) {
 
 function loadLocalProducts() {
   const seed = [
-    { id: 1, code: 'NOVA-TS-001', name: 'Áo thun NOVA Basic', category: 'Áo thun', size: 'M', cost: 90000, price: 199000, stock: 20, image: 'assets/images/product/ao_thun.jpg', description: 'Áo thun basic chất liệu cotton cao cấp.' },
-    { id: 2, code: 'NOVA-HOOD-001', name: 'Hoodie NOVA Street', category: 'Hoodie', size: 'M', cost: 180000, price: 399000, stock: 10, image: 'assets/images/product/hoodie.jpg', description: 'Hoodie phong cách đường phố.' },
-    { id: 3, code: 'NOVA-JK-001', name: 'Áo khoác NOVA Basic', category: 'Áo khoác', size: 'M', cost: 150000, price: 299000, stock: 15, image: 'assets/images/product/ao_khoac.jpg', description: 'Áo khoác nhẹ, phù hợp nhiều thời tiết.' },
-    { id: 4, code: 'NOVA-JN-001', name: 'Quần jeans NOVA nam', category: 'Quần', size: 'M', cost: 220000, price: 499000, stock: 9, image: 'assets/images/product/quan_jeans_nam.jpg', description: 'Quần jeans nam dáng regular fit.' },
-    { id: 5, code: 'NOVA-WP-001', name: 'Quần ống rộng NOVA nữ', category: 'Quần', size: 'M', cost: 200000, price: 459000, stock: 8, image: 'assets/images/product/quan_ong_rong_nu.jpg', description: 'Quần ống rộng nữ thời trang, thoải mái.' }
+    { id: 1, code: 'NOVA-TS-001', name: 'Áo thun NOVA Basic', category: 'Áo thun', size: 'M', cost: 90000, price: 199000, stock: 20, image: './assets/images/product/ao_thun.jpg', description: 'Áo thun basic chất liệu cotton cao cấp.' },
+    { id: 2, code: 'NOVA-HOOD-001', name: 'Hoodie NOVA Street', category: 'Hoodie', size: 'M', cost: 180000, price: 399000, stock: 10, image: './assets/images/product/hoodie.jpg', description: 'Hoodie phong cách đường phố.' },
+    { id: 3, code: 'NOVA-JK-001', name: 'Áo khoác NOVA Basic', category: 'Áo khoác', size: 'M', cost: 150000, price: 299000, stock: 15, image: './assets/images/product/ao_khoac.jpg', description: 'Áo khoác nhẹ, phù hợp nhiều thời tiết.' },
+    { id: 4, code: 'NOVA-JN-001', name: 'Quần jeans NOVA nam', category: 'Quần', size: 'M', cost: 220000, price: 499000, stock: 9, image: './assets/images/product/quan_jeans_nam.jpg', description: 'Quần jeans nam dáng regular fit.' },
+    { id: 5, code: 'NOVA-WP-001', name: 'Quần ống rộng NOVA nữ', category: 'Quần', size: 'M', cost: 200000, price: 459000, stock: 8, image: './assets/images/product/quan_ong_rong_nu.jpg', description: 'Quần ống rộng nữ thời trang, thoải mái.' }
   ];
   try {
     const saved = JSON.parse(localStorage.getItem('novaProducts') || 'null');
     if (Array.isArray(saved)) {
-      // Merge: thêm seed mới nếu chưa có (theo id)
+
       const merged = [...saved];
       seed.forEach(s => {
         if (!merged.find(x => x.id === s.id)) merged.push(s);
