@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<<<<<<< HEAD
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NOVA — Wear Your Identity</title>
@@ -44,12 +43,15 @@
             </svg>
         </button>
 
-        <button class="icon-btn" onclick="openAccount()" aria-label="Tài khoản">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="8" r="3.5"/>
-                <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
-            </svg>
-        </button>
+        <div style="display:flex;align-items:center;gap:4px">
+            <button class="icon-btn" onclick="openAccount()" aria-label="Tài khoản">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="8" r="3.5"/>
+                    <path d="M5 21v-2a7 7 0 0 1 14 0v2"/>
+                </svg>
+            </button>
+            <span id="headerCustomerName" onclick="openAccount()" style="font-size:11px;font-weight:600;letter-spacing:0.5px;cursor:pointer;display:none;color:#493329;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="Xem tài khoản của bạn"></span>
+        </div>
 
         <button class="icon-btn" onclick="openCart()" aria-label="Giỏ hàng">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -280,33 +282,71 @@
     </a>
 
     <p style="font-size:10px;color:#94877d;line-height:1.8;margin-top:15px">
-        Đăng nhập hoặc đăng ký tài khoản để tiếp tục mua sắm.
+        Khách hàng cần đăng nhập để thao tác và thanh toán giỏ hàng.
     </p>
 </aside>
 
+<!-- MODAL THANH TOÁN (CHECKOUT) -->
 <div class="checkout-overlay" id="checkoutOverlay" onclick="closeCheckout()"></div>
-<section class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+<section class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle" style="max-height:90vh;overflow-y:auto">
   <button class="checkout-close" type="button" onclick="closeCheckout()" aria-label="Đóng">×</button>
   <p class="eyebrow">NOVA CHECKOUT</p>
   <h2 id="checkoutTitle">Thông tin giao hàng</h2>
   <p class="checkout-note">Kiểm tra thông tin trước khi xác nhận đơn hàng của bạn.</p>
+  
   <form id="checkoutForm" onsubmit="placeOrder(event)">
-    <label for="checkoutName">Họ và tên</label>
+    <label for="checkoutName">Họ và tên người nhận</label>
     <input id="checkoutName" name="fullname" required autocomplete="name" />
     
-    <label for="checkoutPhone">Số điện thoại</label>
+    <label for="checkoutPhone">Số điện thoại nhận hàng</label>
     <input id="checkoutPhone" name="phone" type="tel" maxlength="10" placeholder="Nhập đúng 10 chữ số (ví dụ: 0912345678)" required autocomplete="tel" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);" pattern="[0-9]{10}" title="Số điện thoại phải gồm đúng 10 chữ số" />
     
-    <label for="savedAddress">Địa chỉ đã lưu</label>
-    <select id="savedAddress" onchange="selectSavedAddress()"><option value="">Nhập địa chỉ mới</option></select>
-    
-    <label for="checkoutAddress">Địa chỉ nhận hàng</label>
-    <textarea id="checkoutAddress" name="address" required rows="3" placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành"></textarea>
+    <label style="font-weight:600;margin-top:12px;display:block">Địa chỉ nhận hàng</label>
+    <div style="display:flex;gap:16px;margin:8px 0 12px;font-size:12px">
+        <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+            <input type="radio" name="addressOption" value="saved" id="addrOptSaved" checked onchange="toggleAddressOption()">
+            Địa chỉ từ tài khoản
+        </label>
+        <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+            <input type="radio" name="addressOption" value="new" id="addrOptNew" onchange="toggleAddressOption()">
+            Nhập địa chỉ giao hàng mới
+        </label>
+    </div>
+
+    <!-- Khối địa chỉ từ tài khoản -->
+    <div id="savedAddressBlock" style="margin-bottom:14px;padding:12px;background:#f9f7f4;border:1px solid #e1dcd5;font-size:12px;border-radius:4px">
+        <div id="savedAddressText" style="color:#493329;line-height:1.5">Chưa có địa chỉ lưu trong tài khoản.</div>
+    </div>
+
+    <!-- Khối nhập địa chỉ mới -->
+    <div id="newAddressBlock" style="display:none;margin-bottom:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
+            <div>
+                <label for="newProvince" style="font-size:11px">Tỉnh / Thành phố *</label>
+                <input id="newProvince" placeholder="VD: TP. Hồ Chí Minh" style="width:100%;padding:10px;border:1px solid #e1dcd5;box-sizing:border-box">
+            </div>
+            <div>
+                <label for="newDistrict" style="font-size:11px">Quận / Huyện *</label>
+                <input id="newDistrict" placeholder="VD: Quận 5" style="width:100%;padding:10px;border:1px solid #e1dcd5;box-sizing:border-box">
+            </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px">
+            <div>
+                <label for="newWard" style="font-size:11px">Phường / Xã *</label>
+                <input id="newWard" placeholder="VD: Phường 4" style="width:100%;padding:10px;border:1px solid #e1dcd5;box-sizing:border-box">
+            </div>
+            <div>
+                <label for="newStreet" style="font-size:11px">Số nhà, tên đường *</label>
+                <input id="newStreet" placeholder="VD: 105 An Dương Vương" style="width:100%;padding:10px;border:1px solid #e1dcd5;box-sizing:border-box">
+            </div>
+        </div>
+    </div>
     
     <label for="checkoutPayment">Phương thức thanh toán</label>
-    <select id="checkoutPayment" name="payment_method" required>
-      <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+    <select id="checkoutPayment" name="payment_method" required style="width:100%;padding:11px;border:1px solid #e1dcd5;background:white;margin-bottom:14px;font-size:12px">
+      <option value="COD" selected>Thanh toán tiền mặt khi nhận hàng (COD)</option>
       <option value="BANK_TRANSFER">Chuyển khoản ngân hàng</option>
+      <option value="ONLINE">Thanh toán trực tuyến (Thẻ ATM / Visa / Ví MoMo / VNPAY)</option>
     </select>
     
     <div class="checkout-total"><span>Tổng thanh toán</span><strong id="checkoutTotal">0₫</strong></div>
@@ -315,15 +355,38 @@
   </form>
 </section>
 
+<!-- MODAL XEM LẠI ĐƠN HÀNG VỪA ĐẶT THÀNH CÔNG -->
+<div class="checkout-overlay" id="orderSuccessOverlay" onclick="closeOrderSuccess()"></div>
+<section class="checkout-modal" id="orderSuccessModal" role="dialog" aria-modal="true" aria-labelledby="orderSuccessTitle" style="max-height:90vh;overflow-y:auto">
+  <button class="checkout-close" type="button" onclick="closeOrderSuccess()" aria-label="Đóng">×</button>
+  <p class="eyebrow" style="color:#3e6b35;font-weight:bold">✓ ĐẶT HÀNG THÀNH CÔNG</p>
+  <h2 id="orderSuccessTitle">Chi tiết đơn đặt hàng</h2>
+  <p class="checkout-note">Cảm ơn bạn đã mua sắm tại NOVA! Dưới đây là thông tin chi tiết đơn hàng của bạn.</p>
+  
+  <div id="orderSuccessContent" style="margin:16px 0;font-size:12px;line-height:1.6"></div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+    <button class="btn-primary" type="button" onclick="closeOrderSuccess(); openAccount(); showOrderHistory();">XEM LỊCH SỬ ĐƠN HÀNG ↗</button>
+    <button class="btn-primary" style="background:#f0eee9;color:#333;border:1px solid #ddd" type="button" onclick="closeOrderSuccess()">TIẾP TỤC MUA SẮM</button>
+  </div>
+</section>
+
+<!-- MODAL CHI TIẾT SẢN PHẨM -->
 <div class="checkout-overlay" id="productDetailOverlay" onclick="closeProductDetail()"></div>
 <section class="checkout-modal" id="productDetailModal" role="dialog" aria-modal="true" aria-labelledby="detailName">
   <button class="checkout-close" type="button" onclick="closeProductDetail()" aria-label="Đóng">×</button>
   <img id="detailImage" alt="" style="width:100%;max-height:260px;object-fit:cover;border-radius:8px;margin-bottom:14px">
-  <p class="eyebrow" id="detailCategory"></p><h2 id="detailName"></h2><p id="detailPrice" class="product-price"></p>
-  <p id="detailDescription"></p><p id="detailStock"></p>
+  <p class="eyebrow" id="detailCategory"></p>
+  <p id="detailCode" style="font-size:11px;color:#81786e;margin-top:2px"></p>
+  <h2 id="detailName" style="margin:6px 0"></h2>
+  <p id="detailSize" style="font-size:11px;color:#493329;font-weight:600;margin-bottom:8px"></p>
+  <p id="detailPrice" class="product-price"></p>
+  <p id="detailDescription"></p>
+  <p id="detailStock" style="font-size:12px;color:#666;margin:10px 0"></p>
   <button class="btn-primary checkout-submit" id="detailAddButton" type="button">THÊM VÀO GIỎ</button>
 </section>
 
+<!-- MODAL TÀI KHOẢN -->
 <div class="checkout-overlay" id="accountOverlay" onclick="closeAccount()"></div>
 <section class="checkout-modal" id="accountModal" role="dialog" aria-modal="true" aria-labelledby="accountTitle">
   <button class="checkout-close" type="button" onclick="closeAccount()" aria-label="Đóng">×</button>
@@ -349,37 +412,5 @@
 
 <script src="js/index.js"></script>
 
-=======
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Bán Quần Áo</title>
-    <!-- Liên kết file CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/home.css">
-</head>
-<body>
-    <!-- Header của trang web -->
-    <header>
-        <h1>Shop Quần Áo</h1>
-        <nav>
-            <a href="index.html">Trang chủ</a>
-            <a href="products.html">Sản phẩm</a>
-            <a href="cart.html">Giỏ hàng</a>
-        </nav>
-    </header>
-
-    <!-- Nội dung chính -->
-    <main>
-        <h2>Chào mừng đến với cửa hàng thời trang của chúng tôi!</h2>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 Web Bán Quần Áo</p>
-    </footer>
-
-    <!-- Liên kết file JavaScript -->
-    <script src="assets/js/main.js"></script>
->>>>>>> 1bcbc6999d48e1e4a8a66f0857fef9ac3cff6240
 </body>
 </html>

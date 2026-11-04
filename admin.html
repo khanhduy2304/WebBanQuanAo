@@ -1,12 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản trị cửa hàng | NOVA</title>
-    
-  <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
 </head>
 <body>
 
@@ -50,8 +48,8 @@
 
             <div class="panel">
                 <h2>Đơn hàng gần đây</h2>
-                <p class="muted">Danh sách đơn hàng sẽ hiển thị tại đây khi hệ thống được kết nối dữ liệu.</p>
-                <button class="btn" onclick="showPage('orders')">XEM ĐƠN HÀNG</button>
+                <div id="recentOrders" style="margin-bottom:15px"></div>
+                <button class="btn" onclick="showPage('orders')">XEM TẤT CẢ ĐƠN HÀNG</button>
             </div>
         </section>
 
@@ -106,11 +104,7 @@
                         </div>
                         <div class="form-field full">
                             <label for="pImage">URL hình ảnh</label>
-                            <input id="pImage" type="url" placeholder="https://...">
-                        </div>
-                        <div class="form-field full">
-                            <label for="pImage">URL hình ảnh</label>
-                            <input id="pImage" type="url" placeholder="https://...">
+                            <input id="pImage" type="text" placeholder="assets/images/... hoặc https://...">
                         </div>
                         <div class="form-field full">
                             <label for="pDescription">Mô tả sản phẩm</label>
@@ -177,18 +171,43 @@
                     <button class="btn" style="margin-top:18px" id="importSubmit">LƯU PHIẾU NHẬP NHÁP</button> <button class="btn-light" type="button" onclick="resetImportForm()">LÀM MỚI</button>
                 </form>
             </div>
-            <div class="panel"><div class="page-title"><h2>Lịch sử nhập hàng</h2><button class="btn-light" type="button" onclick="exportMovementExcel('PN')">Xuất Excel phiếu nhập</button></div>
+            <div class="panel">
+                <div class="page-title">
+                    <h2>Lịch sử phiếu nhập hàng</h2>
+                    <button class="btn-light" type="button" onclick="exportMovementExcel('PN')">Xuất Excel phiếu nhập</button>
+                </div>
+                <div class="toolbar">
+                    <input id="importSearch" placeholder="Tìm theo mã phiếu, sản phẩm, ghi chú..." oninput="renderImports()">
+                    <label>Từ ngày <input id="importDateFrom" type="date" onchange="renderImports()"></label>
+                    <label>Đến ngày <input id="importDateTo" type="date" onchange="renderImports()"></label>
+                </div>
                 <div class="table-wrap"><table><thead><tr><th>Mã phiếu</th><th>Ngày nhập</th><th>Sản phẩm</th><th>Số lượng</th><th>Thành tiền</th><th>Trạng thái</th><th>Ghi chú</th><th>Thao tác</th></tr></thead><tbody id="importTable"></tbody></table></div>
             </div>
         </section>
 
         <!-- GIÁ BÁN -->
         <section id="prices" class="page hidden">
-            <div class="page-title"><div><h1>Quản lý giá bán</h1><p class="muted">Theo dõi giá vốn, giá bán và lợi nhuận.</p></div></div>
-            <div class="panel"><div class="table-wrap"><table>
-                <thead><tr><th>Sản phẩm</th><th>Giá vốn</th><th>Giá bán</th><th>Lợi nhuận</th><th>Tỷ lệ lợi nhuận</th><th>Thao tác</th></tr></thead>
-                <tbody id="priceTable"></tbody>
-            </table></div></div>
+            <div class="page-title"><div><h1>Quản lý giá bán</h1><p class="muted">Thiết lập tỉ lệ % lợi nhuận và theo dõi giá vốn, giá bán.</p></div></div>
+            
+            <div class="panel">
+                <h2>Cấu hình tỉ lệ % lợi nhuận theo loại sản phẩm</h2>
+                <p class="muted" style="margin-bottom:12px">Nhập % lợi nhuận dự kiến cho từng loại. Bấm "Áp dụng" để tự động tính lại giá bán = Giá vốn × (1 + % Lợi nhuận) cho toàn bộ sản phẩm thuộc loại đó.</p>
+                <div id="categoryProfitConfig" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:12px;margin-bottom:10px"></div>
+            </div>
+
+            <div class="panel">
+                <h2>Tra cứu và điều chỉnh giá bán sản phẩm</h2>
+                <div class="toolbar">
+                    <input id="priceSearch" placeholder="Tra cứu sản phẩm theo mã, tên hoặc loại..." oninput="renderPrices()">
+                    <select id="priceCategoryFilter" onchange="renderPrices()">
+                        <option value="">Tất cả loại sản phẩm</option>
+                    </select>
+                </div>
+                <div class="table-wrap"><table>
+                    <thead><tr><th>Mã SP</th><th>Tên sản phẩm</th><th>Loại</th><th>Giá vốn</th><th>% Lợi nhuận</th><th>Giá bán</th><th>Lợi nhuận/SP</th><th>Thao tác</th></tr></thead>
+                    <tbody id="priceTable"></tbody>
+                </table></div>
+            </div>
         </section>
 
         <!-- PHIẾU XUẤT HÀNG -->
@@ -206,8 +225,45 @@
         <!-- TỒN KHO -->
         <section id="inventory" class="page hidden">
             <div class="page-title"><div><h1>Tồn kho</h1><p class="muted">Báo cáo số lượng và giá trị hàng tồn hiện tại.</p></div><button class="btn" type="button" onclick="exportInventoryExcel()">↓ XUẤT TỒN KHO EXCEL</button></div>
-            <div class="panel"><div class="toolbar"><input id="inventorySearch" placeholder="Tìm sản phẩm..." oninput="renderInventory()"><label>Từ ngày <input id="movementDateFrom" type="date" onchange="renderInventory()"></label><label>Đến ngày <input id="movementDateTo" type="date" onchange="renderInventory()"></label></div><p class="muted" id="movementSummary"></p>
-                <div class="table-wrap"><table><thead><tr><th>Mã</th><th>Sản phẩm</th><th>Loại</th><th>Tồn kho</th><th>Giá trị tồn</th><th>Trạng thái</th></tr></thead><tbody id="inventoryTable"></tbody></table></div><h2 style="margin-top:24px">Lịch sử nhập – xuất theo khoảng thời gian</h2><div class="table-wrap"><table><thead><tr><th>Ngày</th><th>Mã phiếu</th><th>Loại giao dịch</th><th>Sản phẩm</th><th>Số lượng</th><th>Tồn trước</th><th>Tồn sau</th><th>Ghi chú</th></tr></thead><tbody id="movementTable"></tbody></table></div>
+            
+            <div class="panel">
+                <h2>Tra cứu số lượng tồn theo loại sản phẩm</h2>
+                <div class="toolbar">
+                    <input id="inventorySearch" placeholder="Tìm theo mã hoặc tên sản phẩm..." oninput="renderInventory()">
+                    <select id="inventoryCategoryFilter" onchange="renderInventory()">
+                        <option value="">Tất cả loại sản phẩm</option>
+                    </select>
+                </div>
+                <div class="table-wrap"><table><thead><tr><th>Mã</th><th>Sản phẩm</th><th>Loại</th><th>Tồn kho</th><th>Giá trị tồn</th><th>Trạng thái</th></tr></thead><tbody id="inventoryTable"></tbody></table></div>
+            </div>
+
+            <div class="panel">
+                <h2>Tra cứu số lượng Nhập – Xuất – Tồn của một sản phẩm</h2>
+                <p class="muted" style="margin-bottom:12px">Chọn sản phẩm và khoảng thời gian để xem chi tiết tồn đầu, nhập, xuất và tồn cuối kỳ.</p>
+                <div class="toolbar">
+                    <select id="nxtProductSelect" onchange="calcNXTReport()"></select>
+                    <label>Từ ngày <input id="nxtDateFrom" type="date" onchange="calcNXTReport()"></label>
+                    <label>Đến ngày <input id="nxtDateTo" type="date" onchange="calcNXTReport()"></label>
+                    <button class="btn" type="button" onclick="calcNXTReport()">TRA CỨU</button>
+                </div>
+                <div id="nxtSummaryBox" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:15px 0;">
+                    <div class="stat"><p>TỒN ĐẦU KỲ</p><strong id="nxtBeginning">0</strong></div>
+                    <div class="stat"><p>TỔNG NHẬP TRONG KỲ</p><strong id="nxtTotalIn">0</strong></div>
+                    <div class="stat"><p>TỔNG XUẤT TRONG KỲ</p><strong id="nxtTotalOut">0</strong></div>
+                    <div class="stat"><p>TỒN CUỐI KỲ</p><strong id="nxtEnding">0</strong></div>
+                </div>
+                <h3 style="margin-top:15px;font-size:14px">Chi tiết biến động của sản phẩm trong khoảng thời gian</h3>
+                <div class="table-wrap"><table><thead><tr><th>Ngày</th><th>Mã phiếu</th><th>Loại giao dịch</th><th>Số lượng</th><th>Tồn trước</th><th>Tồn sau</th><th>Ghi chú</th></tr></thead><tbody id="nxtDetailTable"></tbody></table></div>
+            </div>
+
+            <div class="panel">
+                <h2>Lịch sử tất cả giao dịch nhập – xuất</h2>
+                <div class="toolbar">
+                    <label>Từ ngày <input id="movementDateFrom" type="date" onchange="renderInventory()"></label>
+                    <label>Đến ngày <input id="movementDateTo" type="date" onchange="renderInventory()"></label>
+                </div>
+                <p class="muted" id="movementSummary"></p>
+                <div class="table-wrap"><table><thead><tr><th>Ngày</th><th>Mã phiếu</th><th>Loại giao dịch</th><th>Sản phẩm</th><th>Số lượng</th><th>Tồn trước</th><th>Tồn sau</th><th>Ghi chú</th></tr></thead><tbody id="movementTable"></tbody></table></div>
             </div>
         </section>
 
@@ -219,16 +275,17 @@
                     <input id="orderSearch" placeholder="Tìm mã đơn hàng hoặc khách hàng..." oninput="renderOrders()">
                     <label>Từ ngày <input id="orderDateFrom" type="date" onchange="renderOrders()"></label>
                     <label>Đến ngày <input id="orderDateTo" type="date" onchange="renderOrders()"></label>
-                    <label>Từ ngày <input id="orderDateFrom" type="date" onchange="renderOrders()"></label>
-                    <label>Đến ngày <input id="orderDateTo" type="date" onchange="renderOrders()"></label>
                     <select id="orderStatusFilter" onchange="renderOrders()">
                         <option value="">Tất cả trạng thái</option>
-                        <option>Mới đặt</option><option>Đang xử lý</option>
-                        <option>Đang giao</option><option>Hoàn thành</option><option>Đã hủy</option>
+                        <option value="Mới đặt">Mới đặt</option>
+                        <option value="Đã xử lý">Đã xử lý</option>
+                        <option value="Đang giao">Đang giao</option>
+                        <option value="Đã giao">Đã giao</option>
+                        <option value="Đã hủy">Đã hủy</option>
                     </select>
                 </div>
                 <div class="table-wrap"><table>
-                    <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Ngày đặt</th><th>Tổng tiền</th><th>Trạng thái</th><th>Cập nhật</th><th>Chi tiết</th><th>Chi tiết</th></tr></thead>
+                    <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Ngày đặt</th><th>Tổng tiền</th><th>Trạng thái</th><th>Cập nhật</th><th>Chi tiết</th></tr></thead>
                     <tbody id="orderTable"></tbody>
                 </table></div>
             </div>
@@ -240,7 +297,7 @@
             <div class="panel">
                 <div class="toolbar"><input id="customerSearch" placeholder="Tìm tên hoặc email..." oninput="renderCustomers()"></div>
                 <div class="table-wrap"><table>
-                    <thead><tr><th>Họ tên</th><th>Email</th><th>Trạng thái tài khoản</th><th>Thao tác</th><th>Thao tác</th></tr></thead>
+                    <thead><tr><th>Họ tên</th><th>Email</th><th>Số điện thoại</th><th>Địa chỉ</th><th>Trạng thái tài khoản</th><th>Thao tác</th></tr></thead>
                     <tbody id="customerTable"></tbody>
                 </table></div>
             </div>
@@ -248,6 +305,16 @@
 
         <p id="adminMessage" class="notice"></p>
     </main>
+</div>
+
+<!-- MODAL CHI TIẾT ĐƠN HÀNG ADMIN -->
+<div id="adminOrderModalOverlay" onclick="closeAdminOrderDetail()" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;z-index:998;"></div>
+<div id="adminOrderModal" class="panel" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:92%;max-width:620px;max-height:85vh;overflow-y:auto;z-index:999;display:none;box-shadow:0 12px 35px rgba(0,0,0,0.25);border-radius:4px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding-bottom:12px;margin-bottom:15px">
+        <h2 id="adminOrderDetailTitle" style="margin:0;font-size:18px">Chi tiết đơn hàng</h2>
+        <button class="btn-light" type="button" onclick="closeAdminOrderDetail()" style="padding:4px 10px;font-size:18px;line-height:1">&times;</button>
+    </div>
+    <div id="adminOrderDetailContent"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
