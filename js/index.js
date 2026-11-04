@@ -1,5 +1,7 @@
 const fallbackImage = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=650&q=80';
 let products = [], cart = [];
+let currentPage = 1;
+const PAGE_SIZE = 4;
 
 try {
   cart = JSON.parse(localStorage.getItem('novaCart') || '[]');
@@ -17,14 +19,27 @@ function escapeHtml(s) {
 }
 
 function loadLocalProducts() {
+  const seed = [
+    { id: 1, code: 'NOVA-TS-001', name: 'Áo thun NOVA Basic', category: 'Áo thun', size: 'M', cost: 90000, price: 199000, stock: 20, image: '', description: 'Áo thun basic chất liệu cotton cao cấp.' },
+    { id: 2, code: 'NOVA-HOOD-001', name: 'Hoodie NOVA Street', category: 'Hoodie', size: 'M', cost: 180000, price: 399000, stock: 10, image: '', description: 'Hoodie phong cách đường phố.' },
+    { id: 3, code: 'NOVA-JK-001', name: 'Áo khoác NOVA Basic', category: 'Áo khoác', size: 'M', cost: 150000, price: 299000, stock: 15, image: '', description: 'Áo khoác nhẹ, phù hợp nhiều thời tiết.' },
+    { id: 4, code: 'NOVA-JN-001', name: 'Quần jeans NOVA nam', category: 'Quần', size: 'M', cost: 220000, price: 499000, stock: 9, image: '', description: 'Quần jeans nam dáng regular fit.' },
+    { id: 5, code: 'NOVA-WP-001', name: 'Quần ống rộng NOVA nữ', category: 'Quần', size: 'M', cost: 200000, price: 459000, stock: 8, image: '', description: 'Quần ống rộng nữ thời trang, thoải mái.' }
+  ];
   try {
     const saved = JSON.parse(localStorage.getItem('novaProducts') || 'null');
-    if (Array.isArray(saved)) return saved;
-  } catch {}
-  const seed = [
-    { id: 1, code: 'NOVA-TS-001', name: 'Áo thun NOVA Basic', category: 'Áo thun', size: 'M', cost: 90000, price: 199000, stock: 20, image: '', description: 'Sản phẩm mẫu' },
-    { id: 2, code: 'NOVA-HOOD-001', name: 'Hoodie NOVA Street', category: 'Hoodie', size: 'M', cost: 180000, price: 399000, stock: 10, image: '', description: 'Sản phẩm mẫu' }
-  ];
+    if (Array.isArray(saved)) {
+      // Merge: thêm seed mới nếu chưa có (theo id)
+      const merged = [...saved];
+      seed.forEach(s => {
+        if (!merged.find(x => x.id === s.id)) merged.push(s);
+      });
+      if (merged.length !== saved.length) {
+        localStorage.setItem('novaProducts', JSON.stringify(merged));
+      }
+      return merged;
+    }
+  } catch { }
   localStorage.setItem('novaProducts', JSON.stringify(seed));
   return seed;
 }
@@ -64,7 +79,7 @@ function loadProducts() {
     const savedCats = JSON.parse(localStorage.getItem('novaAdminCategories') || '[]');
     hiddenCats = savedCats.filter(c => typeof c === 'object' && c.hidden).map(c => c.name);
     cats = savedCats.filter(c => typeof c === 'string' || !c.hidden).map(c => typeof c === 'string' ? c : c.name);
-  } catch {}
+  } catch { }
 
   const raw = loadLocalProducts();
   raw.forEach(p => {
@@ -109,7 +124,13 @@ function renderProducts() {
     Number(p.price) <= max
   );
 
-  grid.innerHTML = filtered.map(p => `
+  // Phân trang
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const paginated = filtered.slice(start, start + PAGE_SIZE);
+
+  grid.innerHTML = paginated.map(p => `
     <article class="product-card">
       <div class="product-image" role="button" tabindex="0" onclick="showProductDetail(${p.id})" onkeydown="if(event.key==='Enter')showProductDetail(${p.id})">
         <img src="${p.image || fallbackImage}" alt="${escapeHtml(p.name)}" loading="lazy">
@@ -128,11 +149,46 @@ function renderProducts() {
 
   const empty = document.getElementById('noProducts');
   if (empty) empty.style.display = filtered.length ? 'none' : 'block';
+
+  renderPagination(totalPages, filtered.length);
+}
+
+function renderPagination(totalPages, totalItems) {
+  const box = document.getElementById('paginationBox');
+  if (!box) return;
+  if (totalPages <= 1) { box.innerHTML = ''; return; }
+
+  let html = `<div class="pagination">`;
+  html += `<button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>‹ Trước</button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  html += `<button class="page-btn" onclick="goPage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled' : ''}>Sau ›</button>`;
+  html += `<span class="page-info">Trang ${currentPage}/${totalPages} · ${totalItems} sản phẩm</span>`;
+  html += `</div>`;
+  box.innerHTML = html;
+}
+
+function goPage(p) {
+  const kw = (document.getElementById('productSearch')?.value || '').trim().toLowerCase();
+  const cat = document.getElementById('categoryFilter')?.value || '';
+  const min = Number(document.getElementById('minPrice')?.value || 0);
+  const max = Number(document.getElementById('maxPrice')?.value || Infinity);
+  const filtered = products.filter(x =>
+    String(x.name || '').toLowerCase().includes(kw) &&
+    (!cat || x.category === cat) &&
+    Number(x.price) >= min && Number(x.price) <= max
+  );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  currentPage = Math.max(1, Math.min(p, totalPages));
+  renderProducts();
+  document.getElementById('productGrid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function filterCategory(c) {
   const sel = document.getElementById('categoryFilter');
   if (sel) sel.value = c;
+  currentPage = 1;
   renderProducts();
 }
 
@@ -145,6 +201,7 @@ function clearFilter() {
   if (min) min.value = '';
   const max = document.getElementById('maxPrice');
   if (max) max.value = '';
+  currentPage = 1;
   renderProducts();
 }
 
@@ -153,7 +210,7 @@ function toggleHeart(b) {
   b.style.color = b.textContent === '♥' ? '#9d5147' : '#57453a';
 }
 
-/* GIỎ HÀNG - RÀNG BUỘC ĐĂNG NHẬP */
+
 function saveCart() {
   localStorage.setItem('novaCart', JSON.stringify(cart));
 }
@@ -283,7 +340,7 @@ function showProductDetail(id) {
   document.getElementById('detailImage').src = p.image || fallbackImage;
   document.getElementById('detailImage').alt = p.name;
   document.getElementById('detailCategory').textContent = p.category || 'NOVA ESSENTIALS';
-  
+
   const codeEl = document.getElementById('detailCode');
   if (codeEl) codeEl.textContent = p.code ? `Mã SP: ${p.code}` : '';
 
@@ -395,7 +452,7 @@ function showOrderHistory() {
   let orders = [];
   try {
     orders = JSON.parse(localStorage.getItem('novaOrders') || '[]');
-  } catch {}
+  } catch { }
 
   const mine = orders.filter(o => o.customerId === c.id);
   document.getElementById('customerOrderHistory').innerHTML = '<h3 style="font-size:14px;margin-bottom:8px">Đơn hàng đã mua:</h3>' +
@@ -563,7 +620,7 @@ function placeOrder(e) {
   let movements = [];
   try {
     movements = JSON.parse(localStorage.getItem('novaExports') || '[]');
-  } catch {}
+  } catch { }
 
   for (const it of payload.items) {
     const p = current.find(x => Number(x.id) === it.id);

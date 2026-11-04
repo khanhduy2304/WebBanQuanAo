@@ -13,6 +13,20 @@
         rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/index.css">
+    <style>
+        /* Phân trang */
+        .pagination { display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; }
+        .page-btn {
+            padding: 7px 14px; border: 1px solid #d4c9be; background: #fff;
+            font-size: 12px; letter-spacing: .05em; cursor: pointer;
+            color: #57453a; transition: background .15s, color .15s;
+            border-radius: 2px;
+        }
+        .page-btn:hover:not(:disabled) { background: #57453a; color: #fff; }
+        .page-btn.active { background: #57453a; color: #fff; border-color: #57453a; font-weight: 700; }
+        .page-btn:disabled { opacity: .4; cursor: default; }
+        .page-info { font-size: 11px; color: #81786e; margin-left: 8px; }
+    </style>
 </head>
 
 <body>
@@ -184,7 +198,7 @@
                 <input id="productSearch" type="search" placeholder="Tìm tên sản phẩm..." oninput="renderProducts()"
                     style="padding:12px 14px;flex:1;min-width:180px;border:1px solid #e1dcd5;outline-color:#8d705d;background:white;font-size:11px">
 
-                <select id="categoryFilter" onchange="renderProducts()"
+                <select id="categoryFilter" onchange="currentPage=1;renderProducts()"
                     style="padding:12px;border:1px solid #e1dcd5;background:white;font-size:11px;min-width:135px">
                     <option value="">Tất cả danh mục</option>
                     <option value="Áo thun">Áo thun</option>
@@ -202,6 +216,7 @@
             <div class="product-grid" id="productGrid"></div>
             <p id="noProducts" style="display:none;text-align:center;padding:35px;font-size:12px;color:#81786e">Không
                 tìm thấy sản phẩm phù hợp.</p>
+            <div id="paginationBox" style="margin:28px 0 10px;text-align:center"></div>
         </section>
 
         <section class="editorial" id="story">

@@ -3,8 +3,11 @@ if (sessionStorage.getItem('novaAdminLoggedIn') !== 'true') window.location.repl
 
 const defaultCategories = ['Áo thun', 'Áo khoác', 'Hoodie', 'Quần', 'Phụ kiện'];
 const seedProducts = [
-  {id:1,code:'NOVA-TS-001',name:'Áo thun NOVA Basic',category:'Áo thun',size:'M',cost:90000,price:199000,stock:20,image:'',description:'Sản phẩm mẫu'},
-  {id:2,code:'NOVA-HOOD-001',name:'Hoodie NOVA Street',category:'Hoodie',size:'M',cost:180000,price:399000,stock:10,image:'',description:'Sản phẩm mẫu'}
+  { id: 1, code: 'NOVA-TS-001',   name: 'Áo thun NOVA Basic',       category: 'Áo thun',  size: 'M', cost: 90000,  price: 199000, stock: 20, image: '', description: 'Áo thun basic chất liệu cotton cao cấp.' },
+  { id: 2, code: 'NOVA-HOOD-001', name: 'Hoodie NOVA Street',        category: 'Hoodie',   size: 'M', cost: 180000, price: 399000, stock: 10, image: '', description: 'Hoodie phong cách đường phố.' },
+  { id: 3, code: 'NOVA-JK-001',   name: 'Áo khoác NOVA Basic',      category: 'Áo khoác', size: 'M', cost: 150000, price: 299000, stock: 15, image: '', description: 'Áo khoác nhẹ, phù hợp nhiều thời tiết.' },
+  { id: 4, code: 'NOVA-JN-001',   name: 'Quần jeans NOVA nam',      category: 'Quần',     size: 'M', cost: 220000, price: 499000, stock: 9,  image: '', description: 'Quần jeans nam dáng regular fit.' },
+  { id: 5, code: 'NOVA-WP-001',   name: 'Quần ống rộng NOVA nữ',   category: 'Quần',     size: 'M', cost: 200000, price: 459000, stock: 8,  image: '', description: 'Quần ống rộng nữ thời trang, thoải mái.' }
 ];
 
 const defaultCategoryProfits = {
@@ -346,9 +349,9 @@ function renderImports() {
       <td>${escapeHtml(i.note || '')}</td>
       <td>
         ${(i.status === 'Chưa hoàn thành') ?
-          `<button class="btn-light" onclick="editImport('${i.code}')">Sửa</button> <button class="btn-light" onclick="completeImport('${i.code}')">Hoàn thành</button>` :
-          '<span class="muted">Đã khóa</span>'
-        }
+      `<button class="btn-light" onclick="editImport('${i.code}')">Sửa</button> <button class="btn-light" onclick="completeImport('${i.code}')">Hoàn thành</button>` :
+      '<span class="muted">Đã khóa</span>'
+    }
       </td>
     </tr>
   `).join('') || '<tr><td colspan="8">Không tìm thấy phiếu nhập hàng nào.</td></tr>';
@@ -705,7 +708,7 @@ function calcNXTReport() {
   `).join('') || '<tr><td colspan="7">Không có giao dịch nhập/xuất của sản phẩm này trong khoảng thời gian đã chọn.</td></tr>';
 }
 
-/* QUẢN LÝ ĐƠN HÀNG */
+
 function orderDay(o) {
   if (o.createdAt) return o.createdAt.slice(0, 10);
   const m = String(o.date || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
@@ -800,7 +803,45 @@ function closeAdminOrderDetail() {
 }
 
 function updateOrderStatus(id, status) {
+
+  const order = orders.find(o => o.id === id);
+  const prevStatus = order ? order.status : null;
+
+
   orders = orders.map(o => o.id === id ? { ...o, status } : o);
+
+
+  if (status === 'Đã hủy' && prevStatus !== 'Đã hủy' && order && Array.isArray(order.items)) {
+    order.items.forEach(item => {
+
+      const prodId = item.id || item.productId;
+      const prod = products.find(p => Number(p.id) === Number(prodId));
+      if (prod) {
+        prod.stock = Number(prod.stock) + Number(item.quantity);
+      }
+    });
+
+    persistAll();
+    renderAdminProducts();
+    renderInventory();
+  }
+
+
+  if (prevStatus === 'Đã hủy' && status !== 'Đã hủy' && order && Array.isArray(order.items)) {
+    order.items.forEach(item => {
+      const prodId = item.id || item.productId;
+      const prod = products.find(p => Number(p.id) === Number(prodId));
+      if (prod) {
+        const newStock = Number(prod.stock) - Number(item.quantity);
+        prod.stock = newStock < 0 ? 0 : newStock;
+      }
+    });
+    persistAll();
+    renderAdminProducts();
+    renderInventory();
+  }
+
+
   persistAll();
   renderOrders();
   renderDashboard();
@@ -811,7 +852,7 @@ function updateOrderStatus(id, status) {
   }
 }
 
-/* QUẢN LÝ KHÁCH HÀNG */
+
 function renderCustomers() {
   const k = (document.getElementById('customerSearch')?.value || '').toLowerCase().trim();
   const filtered = customers.filter(c =>
@@ -859,7 +900,7 @@ function toggleCustomer(email) {
   showMessage('Đã cập nhật trạng thái khóa tài khoản.');
 }
 
-/* XUẤT BÁO CÁO EXCEL / CSV */
+
 function exportInventoryExcel() {
   const rows = products.map(p => ({
     'Mã sản phẩm': p.code,
