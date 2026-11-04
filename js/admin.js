@@ -3,11 +3,11 @@ if (sessionStorage.getItem('novaAdminLoggedIn') !== 'true') window.location.repl
 
 const defaultCategories = ['Áo thun', 'Áo khoác', 'Hoodie', 'Quần', 'Phụ kiện'];
 const seedProducts = [
-  { id: 1, code: 'NOVA-TS-001',   name: 'Áo thun NOVA Basic',       category: 'Áo thun',  size: 'M', cost: 90000,  price: 199000, stock: 20, image: '', description: 'Áo thun basic chất liệu cotton cao cấp.' },
-  { id: 2, code: 'NOVA-HOOD-001', name: 'Hoodie NOVA Street',        category: 'Hoodie',   size: 'M', cost: 180000, price: 399000, stock: 10, image: '', description: 'Hoodie phong cách đường phố.' },
-  { id: 3, code: 'NOVA-JK-001',   name: 'Áo khoác NOVA Basic',      category: 'Áo khoác', size: 'M', cost: 150000, price: 299000, stock: 15, image: '', description: 'Áo khoác nhẹ, phù hợp nhiều thời tiết.' },
-  { id: 4, code: 'NOVA-JN-001',   name: 'Quần jeans NOVA nam',      category: 'Quần',     size: 'M', cost: 220000, price: 499000, stock: 9,  image: '', description: 'Quần jeans nam dáng regular fit.' },
-  { id: 5, code: 'NOVA-WP-001',   name: 'Quần ống rộng NOVA nữ',   category: 'Quần',     size: 'M', cost: 200000, price: 459000, stock: 8,  image: '', description: 'Quần ống rộng nữ thời trang, thoải mái.' }
+  { id: 1, code: 'NOVA-TS-001', name: 'Áo thun NOVA Basic', category: 'Áo thun', size: 'M', cost: 90000, price: 199000, stock: 20, image: 'assets/images/product/aothun.jpg', description: 'Áo thun basic chất liệu cotton cao cấp.' },
+  { id: 2, code: 'NOVA-HOOD-001', name: 'Hoodie NOVA Street', category: 'Hoodie', size: 'M', cost: 180000, price: 399000, stock: 10, image: 'assets/images/product/hoodie.jpg', description: 'Hoodie phong cách đường phố.' },
+  { id: 3, code: 'NOVA-JK-001', name: 'Áo khoác NOVA Basic', category: 'Áo khoác', size: 'M', cost: 150000, price: 299000, stock: 15, image: 'assets/images/product/ao_khoac.jpg', description: 'Áo khoác nhẹ, phù hợp nhiều thời tiết.' },
+  { id: 4, code: 'NOVA-JN-001', name: 'Quần jeans NOVA nam', category: 'Quần', size: 'M', cost: 220000, price: 499000, stock: 9, image: 'assets/images/product/quan_jeans_nam.jpg', description: 'Quần jeans nam dáng regular fit.' },
+  { id: 5, code: 'NOVA-WP-001', name: 'Quần ống rộng NOVA nữ', category: 'Quần', size: 'M', cost: 200000, price: 459000, stock: 8, image: 'assets/images/product/quan_ong_rong_nu.jpg', description: 'Quần ống rộng nữ thời trang, thoải mái.' }
 ];
 
 const defaultCategoryProfits = {
@@ -104,7 +104,47 @@ function renderDashboard() {
   }
 }
 
-/* QUẢN LÝ SẢN PHẨM */
+
+function handleImageFile(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    alert('Ảnh có kích thước quá lớn (> 2MB). Vui lòng chọn ảnh nhỏ hơn.');
+    input.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    document.getElementById('pImage').value = e.target.result;
+    showImagePreview(e.target.result);
+  };
+  reader.readAsDataURL(file);
+}
+
+function previewImageUrl(url) {
+  if (!url || !url.trim()) {
+    document.getElementById('pImagePreview').style.display = 'none';
+    return;
+  }
+  showImagePreview(url.trim());
+}
+
+function showImagePreview(src) {
+  const box = document.getElementById('pImagePreview');
+  const img = document.getElementById('pImagePreviewImg');
+  if (!box || !img) return;
+  img.src = src;
+  box.style.display = 'block';
+}
+
+function clearImageInput() {
+  document.getElementById('pImage').value = '';
+  const fi = document.getElementById('pImageFile');
+  if (fi) fi.value = '';
+  document.getElementById('pImagePreview').style.display = 'none';
+}
+
+
 function showProductForm(p) {
   document.getElementById('productFormPanel').classList.remove('hidden');
   document.getElementById('productFormTitle').textContent = p ? 'Sửa sản phẩm' : 'Thêm sản phẩm';
@@ -117,13 +157,22 @@ function showProductForm(p) {
   document.getElementById('pPrice').value = p ? p.price : '';
   document.getElementById('pStock').value = p ? p.stock : '';
   document.getElementById('pDescription').value = p ? p.description || '' : '';
-  document.getElementById('pImage').value = p ? p.image || '' : '';
+  const img = p ? (p.image || '') : '';
+  document.getElementById('pImage').value = img;
+  const fi = document.getElementById('pImageFile');
+  if (fi) fi.value = '';
+  if (img) {
+    showImagePreview(img);
+  } else {
+    document.getElementById('pImagePreview').style.display = 'none';
+  }
   document.getElementById('productFormPanel').scrollIntoView({ behavior: 'smooth' });
 }
 
 function hideProductForm() {
   document.getElementById('productFormPanel').classList.add('hidden');
   document.getElementById('productForm').reset();
+  clearImageInput();
 }
 
 function saveProduct(event) {
@@ -609,7 +658,7 @@ function renderInventory() {
       <td>${escapeHtml(p.category || '')}</td>
       <td><strong>${p.stock}</strong></td>
       <td>${money(p.cost * p.stock)}</td>
-      <td><span class="badge" style="background:${p.stock < 10 ? '#fee' : '#e8eee4'};color:${p.stock < 10 ? '#a00' : '#42623a'}">${p.stock < 10 ? 'Sắp hết hàng' : 'Còn hàng'}</span></td>
+      <td><span class="badge" style="background:${p.stock <= 0 ? '#fdd' : p.stock < 10 ? '#fee' : '#e8eee4'};color:${p.stock <= 0 ? '#800' : p.stock < 10 ? '#a00' : '#42623a'}">${p.stock <= 0 ? 'Hết hàng' : p.stock < 10 ? 'Sắp hết hàng' : 'Còn hàng'}</span></td>
     </tr>`).join('') || '<tr><td colspan="6">Không có dữ liệu tồn kho.</td></tr>';
 
   // 2. Cập nhật dropdown chọn sản phẩm cho NXT
@@ -911,7 +960,7 @@ function exportInventoryExcel() {
     'Giá bán (VNĐ)': Number(p.price || 0),
     'Số lượng tồn': Number(p.stock || 0),
     'Giá trị tồn kho (VNĐ)': Number(p.cost || 0) * Number(p.stock || 0),
-    'Trạng thái': p.stock < 10 ? 'Sắp hết hàng' : 'Còn hàng'
+    'Trạng thái': p.stock <= 0 ? 'Hết hàng' : p.stock < 10 ? 'Sắp hết hàng' : 'Còn hàng'
   }));
 
   if (window.XLSX) {

@@ -117,8 +117,22 @@
                                 <input id="pStock" type="number" min="0" required>
                             </div>
                             <div class="form-field full">
-                                <label for="pImage">URL hình ảnh</label>
-                                <input id="pImage" type="text" placeholder="assets/images/... hoặc https://...">
+                                <label>Hình ảnh sản phẩm</label>
+                                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px">
+                                    <label class="btn-light" style="cursor:pointer;padding:8px 16px;display:inline-block">
+                                        📁 Chọn ảnh từ máy
+                                        <input id="pImageFile" type="file" accept="image/*" onchange="handleImageFile(this)" style="display:none">
+                                    </label>
+                                    <span style="color:#999;font-size:12px">hoặc nhập URL:</span>
+                                    <input id="pImage" type="text" placeholder="assets/images/... hoặc https://..."
+                                        style="flex:1;min-width:160px" oninput="previewImageUrl(this.value)">
+                                </div>
+                                <div id="pImagePreview" style="margin-top:10px;display:none">
+                                    <img id="pImagePreviewImg" src="" alt="Xem trước"
+                                        style="max-height:140px;max-width:240px;border:1px solid #ddd;border-radius:4px;object-fit:contain;background:#f5f5f5">
+                                    <button type="button" class="btn-light" style="margin-left:10px;vertical-align:top;color:#a00"
+                                        onclick="clearImageInput()">✕ Xóa ảnh</button>
+                                </div>
                             </div>
                             <div class="form-field full">
                                 <label for="pDescription">Mô tả sản phẩm</label>

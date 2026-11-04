@@ -15,17 +15,48 @@
     <link rel="stylesheet" href="assets/css/index.css">
     <style>
         /* Phân trang */
-        .pagination { display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap; }
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
         .page-btn {
-            padding: 7px 14px; border: 1px solid #d4c9be; background: #fff;
-            font-size: 12px; letter-spacing: .05em; cursor: pointer;
-            color: #57453a; transition: background .15s, color .15s;
+            padding: 7px 14px;
+            border: 1px solid #d4c9be;
+            background: #fff;
+            font-size: 12px;
+            letter-spacing: .05em;
+            cursor: pointer;
+            color: #57453a;
+            transition: background .15s, color .15s;
             border-radius: 2px;
         }
-        .page-btn:hover:not(:disabled) { background: #57453a; color: #fff; }
-        .page-btn.active { background: #57453a; color: #fff; border-color: #57453a; font-weight: 700; }
-        .page-btn:disabled { opacity: .4; cursor: default; }
-        .page-info { font-size: 11px; color: #81786e; margin-left: 8px; }
+
+        .page-btn:hover:not(:disabled) {
+            background: #57453a;
+            color: #fff;
+        }
+
+        .page-btn.active {
+            background: #57453a;
+            color: #fff;
+            border-color: #57453a;
+            font-weight: 700;
+        }
+
+        .page-btn:disabled {
+            opacity: .4;
+            cursor: default;
+        }
+
+        .page-info {
+            font-size: 11px;
+            color: #81786e;
+            margin-left: 8px;
+        }
     </style>
 </head>
 
