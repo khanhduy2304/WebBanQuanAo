@@ -27,17 +27,12 @@ function loadLocalProducts() {
     { id: 5, code: 'NOVA-WP-001', name: 'Quần ống rộng NOVA nữ', category: 'Quần', size: 'M', cost: 200000, price: 459000, stock: 8, image: './assets/images/product/quan_ong_rong_nu.jpg', description: 'Quần ống rộng nữ thời trang, thoải mái.' }
   ];
   try {
-    const saved = JSON.parse(localStorage.getItem('novaProducts') || 'null');
-    if (Array.isArray(saved)) {
-
-      const merged = [...saved];
-      seed.forEach(s => {
-        if (!merged.find(x => x.id === s.id)) merged.push(s);
-      });
-      if (merged.length !== saved.length) {
-        localStorage.setItem('novaProducts', JSON.stringify(merged));
+    const raw = localStorage.getItem('novaProducts');
+    if (raw !== null) {
+      const saved = JSON.parse(raw);
+      if (Array.isArray(saved)) {
+        return saved;
       }
-      return merged;
     }
   } catch { }
   localStorage.setItem('novaProducts', JSON.stringify(seed));
